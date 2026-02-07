@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NaijaMall API Tester</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2rem;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .test-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .test-section h2 {
+            color: #22c55e;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        button {
+            background: #22c55e;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        button:hover {
+            background: #16a34a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .result {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 4px solid #22c55e;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .result.error {
+            border-left-color: #ef4444;
+            background: #fee;
+        }
+        .result.success {
+            border-left-color: #22c55e;
+            background: #f0fdf4;
+        }
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        .status.success {
+            background: #dcfce7;
+            color: #166534;
+        }
+        .status.error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        .status.pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .api-url {
+            background: #f1f5f9;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 13px;
+            margin: 10px 0;
+        }
+        .input-group {
+            margin: 10px 0;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: 500;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .input-group input:focus {
+            outline: none;
+            border-color: #22c55e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 NaijaMall API Tester</h1>
+        <p class="subtitle">Test your backend API to ensure everything is working correctly</p>
+
+        <!-- Test 1: Health Check -->
+        <div class="test-section">
+            <h2>1. Health Check <span class="status pending" id="status1">Not Tested</span></h2>
+            <p>Test if the server is running and responding</p>
+            <div class="api-url">GET http://localhost:5000/api/health</div>
+            <button onclick="testHealth()">Test Health Check</button>
+            <div id="result1"></div>
+        </div>
+
+        <!-- Test 2: Register User -->
+        <div class="test-section">
+            <h2>2. User Registration <span class="status pending" id="status2">Not Tested</span></h2>
+            <p>Test user registration endpoint</p>
+            <div class="api-url">POST http://localhost:5000/api/auth/register</div>
+            
+            <div class="input-group">
+                <label>Email</label>
+                <input type="email" id="regEmail" value="test@naijamall.com" placeholder="Enter email">
+            </div>
+            <div class="input-group">
+                <label>Phone</label>
+                <input type="text" id="regPhone" value="+2348137790780" placeholder="+234...">
+            </div>
+            
+            <button onclick="testRegister()">Test Registration</button>
+            <div id="result2"></div>
+        </div>
+
+        <!-- Test 3: Login -->
+        <div class="test-section">
+            <h2>3. User Login <span class="status pending" id="status3">Not Tested</span></h2>
+            <p>Test user login endpoint</p>
+            <div class="api-url">POST http://localhost:5000/api/auth/login</div>
+            <button onclick="testLogin()">Test Login</button>
+            <div id="result3"></div>
+        </div>
+
+        <!-- Test 4: Get Categories -->
+        <div class="test-section">
+            <h2>4. Get Categories <span class="status pending" id="status4">Not Tested</span></h2>
+            <p>Test fetching product categories</p>
+            <div class="api-url">GET http://localhost:5000/api/categories</div>
+            <button onclick="testCategories()">Test Get Categories</button>
+            <div id="result4"></div>
+        </div>
+
+        <!-- Test 5: Get Products -->
+        <div class="test-section">
+            <h2>5. Get Products <span class="status pending" id="status5">Not Tested</span></h2>
+            <p>Test fetching products with pagination</p>
+            <div class="api-url">GET http://localhost:5000/api/products?page=1&limit=10</div>
+            <button onclick="testProducts()">Test Get Products</button>
+            <div id="result5"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:5000';
+        let authToken = null;
+
+        function showResult(testNum, data, isError = false) {
+            const resultDiv = document.getElementById(`result${testNum}`);
+            const statusSpan = document.getElementById(`status${testNum}`);
+            
+            resultDiv.innerHTML = `<div class="result ${isError ? 'error' : 'success'}"><pre>${JSON.stringify(data, null, 2)}</pre></div>`;
+            
+            statusSpan.className = `status ${isError ? 'error' : 'success'}`;
+            statusSpan.textContent = isError ? '❌ Failed' : '✅ Success';
+        }
+
+        async function testHealth() {
+            try {
+                const response = await fetch(`${API_URL}/api/health`);
+                const data = await response.json();
+                showResult(1, data, !response.ok);
+            } catch (error) {
+                showResult(1, { error: error.message, message: 'Make sure the server is running on port 5000' }, true);
+            }
+        }
+
+        async function testRegister() {
+            const email = document.getElementById('regEmail').value;
+            const phone = document.getElementById('regPhone').value;
+            
+            try {
+                const response = await fetch(`${API_URL}/api/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        firstName: 'Test',
+                        lastName: 'User',
+                        email: email,
+                        phone: phone,
+                        password: 'password123',
+                        role: 'buyer'
+                    })
+                });
+                const data = await response.json();
+                
+                if (data.success && data.data && data.data.token) {
+                    authToken = data.data.token;
+                }
+                
+                showResult(2, data, !response.ok);
+            } catch (error) {
+                showResult(2, { error: error.message }, true);
+            }
+        }
+
+        async function testLogin() {
+            const email = document.getElementById('regEmail').value;
+            
+            try {
+                const response = await fetch(`${API_URL}/api/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: 'password123'
+                    })
+                });
+                const data = await response.json();
+                
+                if (data.success && data.data && data.data.token) {
+                    authToken = data.data.token;
+                }
+                
+                showResult(3, data, !response.ok);
+            } catch (error) {
+                showResult(3, { error: error.message }, true);
+            }
+        }
+
+        async function testCategories() {
+            try {
+                const response = await fetch(`${API_URL}/api/categories`);
+                const data = await response.json();
+                showResult(4, data, !response.ok);
+            } catch (error) {
+                showResult(4, { error: error.message }, true);
+            }
+        }
+
+        async function testProducts() {
+            try {
+                const response = await fetch(`${API_URL}/api/products?page=1&limit=10`);
+                const data = await response.json();
+                showResult(5, data, !response.ok);
+            } catch (error) {
+                showResult(5, { error: error.message }, true);
+            }
+        }
+    </script>
+</body>
+</html>
